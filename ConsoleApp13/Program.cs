@@ -11,21 +11,23 @@ namespace ConsoleApp13
         static void Main(string[] args)
         {
 
-            Func<int, bool> isEven = delegate (int number)
+            Func<int, int> square = delegate (int number)
             {
-                return number % 2 == 0;
+                return number * number;
             };
 
-            Console.WriteLine("Тестування парності чисел:");
 
-            int[] testNumbers = { 10, 15, 22, 33, 42 };
+            Console.WriteLine("Тестування підрахунку квадрата чисел:");
+
+            int[] testNumbers = { 3, 7, 5, 10, 15 };
 
             foreach (var number in testNumbers)
             {
-                Console.WriteLine($"Число {number} {(isEven(number) ? "парне" : "непарне")}");
+                Console.WriteLine($"Квадрат числа {number} = {square(number)}");
             }
         }
     }
 }
     
 
+    
