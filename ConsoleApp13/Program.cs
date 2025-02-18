@@ -11,23 +11,20 @@ namespace ConsoleApp13
         static void Main(string[] args)
         {
 
-            Func<int, int> square = delegate (int number)
-            {
-                return number * number;
-            };
+            Func<int, int> cube = x => x * x * x;
 
 
-            Console.WriteLine("Тестування підрахунку квадрата чисел:");
+            Console.WriteLine("Тестування підрахунку куба чисел:");
 
-            int[] testNumbers = { 3, 7, 5, 10, 15 };
+            int[] testNumbers = { 2, 3, 4, 5, 6 };
 
             foreach (var number in testNumbers)
             {
-                Console.WriteLine($"Квадрат числа {number} = {square(number)}");
+                Console.WriteLine($"Куб числа {number} = {cube(number)}");
             }
         }
     }
 }
-    
+
 
     
