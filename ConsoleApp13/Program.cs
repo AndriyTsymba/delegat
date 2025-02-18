@@ -10,9 +10,9 @@ namespace ConsoleApp13
     {
         static void Main(string[] args)
         {
-            Func<int[], int> findMax = arr => arr.Max();
+            Func<int[], int> findMax = arr => arr.Min();
             int[] numbers = { 12, 5, 8, 20, 6, 15 };
-            Console.WriteLine("Максимум в масиві: " + findMax(numbers));
+            Console.WriteLine("Мінімум в масиві: " + findMax(numbers));
         }
     }
 }
