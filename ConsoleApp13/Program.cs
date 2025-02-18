@@ -6,43 +6,93 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp13
 {
-    internal class Program
-    {
-        static void Main(string[] args)
+  
+        internal class Program
         {
-            Func<string, (int, int, int)> getRgbValue = delegate (string color)
+            public class Item
             {
-                switch (color.ToLower())
+                public string Name { get; set; }
+                public double Volume { get; set; }
+
+                public Item(string name, double volume)
                 {
-                    case "red":
-                        return (255, 0, 0);  
-                    case "orange":
-                        return (255, 165, 0); 
-                    case "yellow":
-                        return (255, 255, 0); 
-                    case "green":
-                        return (0, 255, 0);  
-                    case "blue":
-                        return (0, 0, 255);   
-                    case "indigo":
-                        return (75, 0, 130);  
-                    case "violet":
-                        return (238, 130, 238); 
-                    default:
-                        return (0, 0, 0);   
+                    Name = name;
+                    Volume = volume;
                 }
-            };
-            Console.WriteLine("Тестування RGB значень для кольорів веселки:");
-
-            string[] rainbowColors = { "Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet" };
-
-            foreach (var color in rainbowColors)
+            }
+            public class Backpack
             {
-                var (r, g, b) = getRgbValue(color);
-                Console.WriteLine($"RGB для {color}: ({r}, {g}, {b})");
+                public string Color { get; set; }
+                public string Brand { get; set; }
+                public string Fabric { get; set; }
+                public double Weight { get; set; }
+                public double Volume { get; set; }
+                public double CurrentVolume { get; private set; }
+                public List<Item> Contents { get; set; }
+                public event EventHandler<Item> ItemAdded;
+                public Backpack(string color, string brand, string fabric, double weight, double volume)
+                {
+                    Color = color;
+                    Brand = brand;
+                    Fabric = fabric;
+                    Weight = weight;
+                    Volume = volume;
+                    CurrentVolume = 0;
+                    Contents = new List<Item>();
+                }
+                public void AddItem(Item item)
+                {
+                    if (CurrentVolume + item.Volume > Volume)
+                    {
+                        throw new InvalidOperationException("Не вистачає місця в рюкзаку для цього предмета!");
+                    }
+
+                    Contents.Add(item);
+                    CurrentVolume += item.Volume;
+                    ItemAdded?.Invoke(this, item);
+                }
+                public void SetBackpackDetails(string color, string brand, string fabric, double weight, double volume)
+                {
+                    Color = color;
+                    Brand = brand;
+                    Fabric = fabric;
+                    Weight = weight;
+                    Volume = volume;
+                    CurrentVolume = 0;
+                }
+            }
+
+            static void Main()
+            {
+
+                Backpack myBackpack = new Backpack("Червоний", "Nike", "Нейлон", 1.5, 20.0);
+                myBackpack.ItemAdded += delegate (object sender, Item e)
+                {
+                    Console.WriteLine($"Предмет '{e.Name}' додано до рюкзака.");
+                };
+                Item laptop = new Item("Ноутбук", 5.0);
+                Item bottle = new Item("Пляшка", 1.5);
+                Item book = new Item("Книга", 2.0);
+
+                try
+                {
+
+                    myBackpack.AddItem(laptop);
+                    myBackpack.AddItem(bottle);
+                    myBackpack.AddItem(book);
+                    Item largeItem = new Item("Великий предмет", 15.0);
+                    myBackpack.AddItem(largeItem);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
         }
     }
-}
+
+
+
+
 
     
